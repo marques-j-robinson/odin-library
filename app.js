@@ -8,16 +8,20 @@ const rootEl = document.querySelector('#root')
 
 const library = []
 
-function Book(title, author, totalPages, completed) {
-    this.title = title
-    this.author = author
-    this.totalPages = totalPages
-    this.completed = completed
-    this.toggleCompleted = function() {
-        this.completed = !this.completed
+class Book {
+    constructor(title, author, totalPages, completed) {
+        this.title = title
+        this.author = author
+        this.totalPages = totalPages
+        this.completed = completed
     }
-    this.info = function() {
-        return `${title} by ${author}, ${totalPages} pages, ${this.completed?'completed':'not read yet'}`
+
+    set toggleCompleted(completed) {
+        this.completed = !completed
+    }
+
+    get info() {
+        return `${this.title} by ${this.author}, ${this.totalPages} pages, ${this.completed?'completed':'not read yet'}`
     }
 }
 
@@ -29,8 +33,8 @@ function addBookToLibrary({title, author, totalPages, completed}) {
     const toggleCompletedEl = document.createElement('button')
     toggleCompletedEl.innerText = 'Toggle Completed Status'
     toggleCompletedEl.addEventListener('click', () => {
-        newBook.toggleCompleted()
-        infoEl.innerHTML = newBook.info()
+        newBook.toggleCompleted = newBook.completed
+        infoEl.innerHTML = newBook.info
         infoEl.append(toggleCompletedEl)
         infoEl.append(deleteBtnEl)
     })
@@ -39,7 +43,7 @@ function addBookToLibrary({title, author, totalPages, completed}) {
     deleteBtnEl.addEventListener('click', () => {
         bookEl.classList.add('hide')
     })
-    infoEl.append(newBook.info())
+    infoEl.append(newBook.info)
     infoEl.append(toggleCompletedEl)
     infoEl.append(deleteBtnEl)
     bookEl.append(infoEl)
